@@ -1,0 +1,35 @@
+﻿apiVersion: v1
+kind: Service
+metadata:
+  name: demosite
+  namespace: default
+spec:
+  selector:
+    app: demosite
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
+  type: NodePort
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: demosite
+  namespace: default
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: demosite
+  template:
+    metadata:
+      labels:
+        app: demosite
+    spec:
+      containers:
+      - name: demosite
+        image: demosite:latest
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 80
